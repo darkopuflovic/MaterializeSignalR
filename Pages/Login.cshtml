@@ -1,0 +1,54 @@
+﻿@page
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Login";
+    TempData.TryGetValue("LoginError", out object error);
+    string Error = error?.ToString();
+}
+@section StylesAndScripts {
+    <link rel="stylesheet" href="~/styles/register.min.css">
+}
+<div class="container">
+    <div class="row non-selectable">
+        <div class="col padding-left-0">
+            <h3 class="indigo-text">Login</h3>
+        </div>
+        <div class="col mt-50 right padding-right-0">
+            <a href="~/Register" class="waves-effect btn waves-indigo indigo login-register"><i class="material-icons right">person_add</i>Register</a>
+        </div>
+    </div>
+    @if (!string.IsNullOrEmpty(Error))
+    {
+        <div class="card-panel red darken-2">
+            <h5 class="white-text darken-2">Error!</h5>
+            <h6 class="white-text">@Error</h6>
+        </div>
+    }
+    <form action="~/" method="post">
+        <input type="hidden" name="page" value="Login">
+        <div class="mt-30">
+            <div>
+                <div class="input-field col s6 mt-30">
+                    <i class="material-icons prefix">email</i>
+                    <input id="email" name="email" type="email" class="validate" onkeydown="setEmailOnEnter(event)">
+                    <label class="label-without-pointer-events" for="email">E-mail</label>
+                    <span class="helper-text" data-error="Wrong" data-success="Right">E-mail empty</span>
+                </div>
+            </div>
+            <div>
+                <div class="input-field col s6 mt-30">
+                    <i class="material-icons prefix">lock</i>
+                    <input id="password" name="password" type="password" class="validate" onkeydown="setPasswordOnEnter(event)">
+                    <label class="label-without-pointer-events" for="password">Password</label>
+                </div>
+            </div>
+            <div class="right mt-20 pb-50">
+                <button class="waves-effect waves-light btn indigo waves-indigo normal-letters"><i class="material-icons right">send</i>Login</button>
+            </div>
+        </div>
+        @Html.AntiForgeryToken()
+    </form>
+</div>
+<script>
+    document.getElementById("email").focus();
+</script>

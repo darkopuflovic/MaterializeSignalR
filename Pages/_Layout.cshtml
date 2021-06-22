@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#4b0082">
+    <link rel="icon" href="~/favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="~/styles/style.min.css">
+    <script type="text/javascript" src="~/lib/signalr/signalr.min.js"></script>
+    <script type="text/javascript" src="~/scripts/script.min.js"></script>
+    @RenderSection("StylesAndScripts", false)
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <nav class="purple darken-4">
+        <a id="menuButton" data-target="slide-out" class="sidenav-trigger menu-open-button"><i class="material-icons">menu</i></a>
+        <div class="container nav-wrapper">
+            <a class="brand-logo center"><i class="material-icons">chat</i>Online Chat</a>
+        </div>
+    </nav>
+        <div class="below-nav">
+            @RenderBody()
+        </div>
+    <script>
+        setRootPath('@Url.Content("~")');
+    </script>
+</body>
+</html>

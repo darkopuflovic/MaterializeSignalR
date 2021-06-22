@@ -1,0 +1,1040 @@
+﻿@page
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Register";
+    TempData.TryGetValue("RegisterError", out object error);
+    string Error = error?.ToString();
+}
+@section StylesAndScripts {
+    <link rel="stylesheet" href="~/styles/register.min.css">
+}
+<div class="container">
+    <h3 class="indigo-text non-selectable">Registration</h3>
+    @if (!string.IsNullOrEmpty(Error))
+    {
+        <div class="card-panel red darken-2">
+            <h5 class="white-text darken-2">Error!</h5>
+            <h6 class="white-text">@Error</h6>
+        </div>
+    }
+    <form action="~/" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="page" value="Register">
+        <div class="mt-30">
+            <div class="container center">
+                <div class="row">
+                    <div class="col s6">
+                        <input type="hidden" id="colorHidden" name="color" value="#311B92">
+                        <input type="hidden" id="textColorHidden" name="textColor" value="white">
+                        <a href="#colorPickerModal" id="userColor" style="background-color: #311B92" class="btn-floating waves-effect waves-light image-size right modal-trigger"><i id="userColorImage" class="material-icons huge-icon">color_lens</i></a>
+                    </div>
+                    <div class="col s6">
+                        <img id="avatar-image" class="responsive-img circle image-size left image-avatar" src="~/images/Avatar.png">
+                    </div>
+                </div>
+            </div>
+            <div class="file-field input-field mt-30">
+                <div class="btn indigo darken-4">
+                    <span class="normal-letters">File</span>
+                    <input name="avatar" type="file" accept="image/*" id="avatar" onchange="avatarImage(event)">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" placeholder="Change avatar" type="text">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="input-field col s6 mt-30">
+                <i class="material-icons prefix">account_box</i>
+                <input id="name" name="name" type="text" class="validate" onkeydown="setNameOnEnter(event)" required="required">
+                <label class="label-without-pointer-events" for="name">Name</label>
+            </div>
+        </div>
+        <div>
+            <div class="input-field col s6 mt-30">
+                <i class="material-icons prefix">email</i>
+                <input id="email" name="email" type="email" class="validate" onkeydown="setEmailOnEnter(event)" required="required">
+                <label class="label-without-pointer-events" for="email">E-mail</label>
+                <span class="helper-text" data-error="Wrong" data-success="Right">E-mail empty</span>
+            </div>
+        </div>
+        <div>
+            <div class="input-field col s6 mt-30">
+                <i class="material-icons prefix">lock</i>
+                <input id="password" name="password" type="password" class="validate" onkeydown="setPasswordOnEnter(event)" required="required">
+                <label class="label-without-pointer-events" for="password">Password</label>
+            </div>
+        </div>
+        <div class="right mt-20 pb-50">
+            <button type="submit" class="waves-effect waves-light btn indigo waves-indigo normal-letters"><i class="material-icons right">send</i>Register</button>
+        </div>
+        @Html.AntiForgeryToken()
+    </form>
+    <div id="colorPickerModal" class="modal color-picker-modal non-selectable">
+        <div id="colorPicker" class="material-color-picker">
+            <div class="material-color-picker__left-panel">
+                <ol class="color-selector">
+                    <li>
+                        <input name="material-color" id="materialColor0" value="Red" type="radio" onchange="showColors('red')">
+                        <label for="materialColor0" title="Red" style="color: rgb(239, 83, 80);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor1" value="Pink" type="radio" onchange="showColors('pink')">
+                        <label for="materialColor1" title="Pink" style="color: rgb(236, 64, 122);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor2" value="Purple" type="radio" onchange="showColors('purple')">
+                        <label for="materialColor2" title="Purple" style="color: rgb(171, 71, 188);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor3" value="Deep Purple" type="radio" onchange="showColors('deepPurple')">
+                        <label for="materialColor3" title="Deep Purple" style="color: rgb(126, 87, 194);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor4" value="Indigo" type="radio" onchange="showColors('indigo')">
+                        <label for="materialColor4" title="Indigo" style="color: rgb(92, 107, 192);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor5" value="Blue" type="radio" onchange="showColors('blue')">
+                        <label for="materialColor5" title="Blue" style="color: rgb(66, 165, 245);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor6" value="Light Blue" type="radio" onchange="showColors('lightBlue')">
+                        <label for="materialColor6" title="Light Blue" style="color: rgb(41, 182, 246);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor7" value="Cyan" type="radio" onchange="showColors('cyan')">
+                        <label for="materialColor7" title="Cyan" style="color: rgb(38, 198, 218);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor8" value="Teal" type="radio" onchange="showColors('teal')">
+                        <label for="materialColor8" title="Teal" style="color: rgb(38, 166, 154);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor9" value="Green" type="radio" onchange="showColors('green')">
+                        <label for="materialColor9" title="Green" style="color: rgb(102, 187, 106);"></label>
+                    </li>
+                </ol>
+            </div>
+            <div class="material-color-picker__left-panel">
+                <ol class="color-selector">
+                    <li>
+                        <input name="material-color" id="materialColor10" value="Light Green" type="radio" onchange="showColors('lightGreen')">
+                        <label for="materialColor10" title="Light Green" style="color: rgb(156, 204, 101);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor11" value="Lime" type="radio" onchange="showColors('lime')">
+                        <label for="materialColor11" title="Lime" style="color: rgb(212, 225, 87);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor12" value="Yellow" type="radio" onchange="showColors('yellow')">
+                        <label for="materialColor12" title="Yellow" style="color: rgb(255, 238, 88);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor13" value="Amber" type="radio" onchange="showColors('amber')">
+                        <label for="materialColor13" title="Amber" style="color: rgb(255, 202, 40);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor14" value="Orange" type="radio" onchange="showColors('orange')">
+                        <label for="materialColor14" title="Orange" style="color: rgb(255, 167, 38);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor15" value="Deep Orange" type="radio" onchange="showColors('deepOrange')">
+                        <label for="materialColor15" title="Deep Orange" style="color: rgb(255, 112, 67);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor16" value="Brown" type="radio" onchange="showColors('brown')">
+                        <label for="materialColor16" title="Brown" style="color: rgb(141, 110, 99);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor17" value="Grey" type="radio" onchange="showColors('grey')">
+                        <label for="materialColor17" title="Grey" style="color: rgb(189, 189, 189);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor18" value="Blue Grey" type="radio" onchange="showColors('blueGrey')">
+                        <label for="materialColor18" title="Blue Grey" style="color: rgb(120, 144, 156);"></label>
+                    </li>
+                    <li>
+                        <input name="material-color" id="materialColor19" value="Black White" type="radio" onchange="showColors('blackWhite')">
+                        <label for="materialColor19" title="Black/Whtie" style="color: rgb(0, 0, 0);"></label>
+                    </li>
+                </ol>
+            </div>
+            <div class="material-color-picker__right-panel">
+                <div id="red" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Red</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(255, 235, 238);" onclick="colorChanged('rgb(255, 235, 238)', 'black')">
+                            <span>50</span>
+                            <span>#FFEBEE</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 205, 210);" onclick="colorChanged('rgb(255, 205, 210)', 'black')">
+                            <span>100</span>
+                            <span>#FFCDD2</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(239, 154, 154);" onclick="colorChanged('rgb(239, 154, 154)', 'black')">
+                            <span>200</span>
+                            <span>#EF9A9A</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(229, 115, 115);" onclick="colorChanged('rgb(229, 115, 115)', 'black')">
+                            <span>300</span>
+                            <span>#E57373</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(239, 83, 80); color: white;" onclick="colorChanged('rgb(239, 83, 80)', 'white')">
+                            <span>400</span>
+                            <span>#EF5350</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(244, 67, 54); color: white;" onclick="colorChanged('rgb(244, 67, 54)', 'white')">
+                            <span>500</span>
+                            <span>#F44336</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(229, 57, 53); color: white;" onclick="colorChanged('rgb(229, 57, 53)', 'white')">
+                            <span>600</span>
+                            <span>#E53935</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(211, 47, 47); color: white;" onclick="colorChanged('rgb(211, 47, 47)', 'white')">
+                            <span>700</span>
+                            <span>#D32F2F</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(198, 40, 40); color: white;" onclick="colorChanged('rgb(198, 40, 40)', 'white')">
+                            <span>800</span>
+                            <span>#C62828</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(183, 28, 28); color: white;" onclick="colorChanged('rgb(183, 28, 28)', 'white')">
+                            <span>900</span>
+                            <span>#B71C1C</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="pink" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Pink</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(252, 228, 236);" onclick="colorChanged('rgb(252, 228, 236)', 'black')">
+                            <span>50</span>
+                            <span>#FCE4EC</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(248, 187, 208);" onclick="colorChanged('rgb(248, 187, 208)', 'black')">
+                            <span>100</span>
+                            <span>#F8BBD0</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(244, 143, 177);" onclick="colorChanged('rgb(244, 143, 177)', 'black')">
+                            <span>200</span>
+                            <span>#F48FB1</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(240, 98, 146);" onclick="colorChanged('rgb(240, 98, 146)', 'black')">
+                            <span>300</span>
+                            <span>#F06292</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(236, 64, 122); color: white;" onclick="colorChanged('rgb(236, 64, 122)', 'white')">
+                            <span>400</span>
+                            <span>#EC407A</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(233, 30, 99); color: white;" onclick="colorChanged('rgb(233, 30, 99)', 'white')">
+                            <span>500</span>
+                            <span>#E91E63</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(216, 27, 96); color: white;" onclick="colorChanged('rgb(216, 27, 96)', 'white')">
+                            <span>600</span>
+                            <span>#D81B60</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(194, 24, 91); color: white;" onclick="colorChanged('rgb(194, 24, 91)', 'white')">
+                            <span>700</span>
+                            <span>#C2185B</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(173, 20, 87); color: white;" onclick="colorChanged('rgb(173, 20, 87)', 'white')">
+                            <span>800</span>
+                            <span>#AD1457</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(136, 14, 79); color: white;" onclick="colorChanged('rgb(136, 14, 79)', 'white')">
+                            <span>900</span>
+                            <span>#880E4F</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="purple" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Purple</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(243, 229, 245);" onclick="colorChanged('rgb(243, 229, 245)', 'black')">
+                            <span>50</span>
+                            <span>#F3E5F5</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(225, 190, 231);" onclick="colorChanged('rgb(225, 190, 231)', 'black')">
+                            <span>100</span>
+                            <span>#E1BEE7</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(206, 147, 216);" onclick="colorChanged('rgb(206, 147, 216)', 'black')">
+                            <span>200</span>
+                            <span>#CE93D8</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(186, 104, 200); color: white;" onclick="colorChanged('rgb(186, 104, 200)', 'white')">
+                            <span>300</span>
+                            <span>#BA68C8</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(171, 71, 188); color: white;" onclick="colorChanged('rgb(171, 71, 188)', 'white')">
+                            <span>400</span>
+                            <span>#AB47BC</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(156, 39, 176); color: white;" onclick="colorChanged('rgb(156, 39, 176)', 'white')">
+                            <span>500</span>
+                            <span>#9C27B0</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(142, 36, 170); color: white;" onclick="colorChanged('rgb(142, 36, 170)', 'white')">
+                            <span>600</span>
+                            <span>#8E24AA</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(123, 31, 162); color: white;" onclick="colorChanged('rgb(123, 31, 162)', 'white')">
+                            <span>700</span>
+                            <span>#7B1FA2</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(106, 27, 154); color: white;" onclick="colorChanged('rgb(106, 27, 154)', 'white')">
+                            <span>800</span>
+                            <span>#6A1B9A</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(74, 20, 140); color: white;" onclick="colorChanged('rgb(74, 20, 140)', 'white')">
+                            <span>900</span>
+                            <span>#4A148C</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="deepPurple" class="color-palette-wrapper js-active">
+                    <h2 class="color-palette-header">Deep Purple</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(237, 231, 246);" onclick="colorChanged('rgb(237, 231, 246)', 'black')">
+                            <span>50</span>
+                            <span>#EDE7F6</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(209, 196, 233);" onclick="colorChanged('rgb(209, 196, 233)', 'black')">
+                            <span>100</span>
+                            <span>#D1C4E9</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(179, 157, 219);" onclick="colorChanged('rgb(179, 157, 219)', 'black')">
+                            <span>200</span>
+                            <span>#B39DDB</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(149, 117, 205); color: white;" onclick="colorChanged('rgb(149, 117, 205)', 'white')">
+                            <span>300</span>
+                            <span>#9575CD</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(126, 87, 194); color: white;" onclick="colorChanged('rgb(126, 87, 194)', 'white')">
+                            <span>400</span>
+                            <span>#7E57C2</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(103, 58, 183); color: white;" onclick="colorChanged('rgb(103, 58, 183)', 'white')">
+                            <span>500</span>
+                            <span>#673AB7</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(94, 53, 177); color: white;" onclick="colorChanged('rgb(94, 53, 177)', 'white')">
+                            <span>600</span>
+                            <span>#5E35B1</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(81, 45, 168); color: white;" onclick="colorChanged('rgb(81, 45, 168)', 'white')">
+                            <span>700</span>
+                            <span>#512DA8</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(69, 39, 160); color: white;" onclick="colorChanged('rgb(69, 39, 160)', 'white')">
+                            <span>800</span>
+                            <span>#4527A0</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(49, 27, 146); color: white;" onclick="colorChanged('rgb(49, 27, 146)', 'white')">
+                            <span>900</span>
+                            <span>#311B92</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="indigo" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Indigo</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(232, 234, 246);" onclick="colorChanged('rgb(232, 234, 246)', 'black')">
+                            <span>50</span>
+                            <span>#E8EAF6</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(197, 202, 233);" onclick="colorChanged('rgb(197, 202, 233)', 'black')">
+                            <span>100</span>
+                            <span>#C5CAE9</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(159, 168, 218);" onclick="colorChanged('rgb(159, 168, 218)', 'black')">
+                            <span>200</span>
+                            <span>#9FA8DA</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(121, 134, 203); color: white;" onclick="colorChanged('rgb(121, 134, 203)', 'white')">
+                            <span>300</span>
+                            <span>#7986CB</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(92, 107, 192); color: white;" onclick="colorChanged('rgb(92, 107, 192)', 'white')">
+                            <span>400</span>
+                            <span>#5C6BC0</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(63, 81, 181); color: white;" onclick="colorChanged('rgb(63, 81, 181)', 'white')">
+                            <span>500</span>
+                            <span>#3F51B5</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(57, 73, 171); color: white;" onclick="colorChanged('rgb(57, 73, 171)', 'white')">
+                            <span>600</span>
+                            <span>#3949AB</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(48, 63, 159); color: white;" onclick="colorChanged('rgb(48, 63, 159)', 'white')">
+                            <span>700</span>
+                            <span>#303F9F</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(40, 53, 147); color: white;" onclick="colorChanged('rgb(40, 53, 147)', 'white')">
+                            <span>800</span>
+                            <span>#283593</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(26, 35, 126); color: white;" onclick="colorChanged('rgb(26, 35, 126)', 'white')">
+                            <span>900</span>
+                            <span>#1A237E</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="blue" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Blue</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(227, 242, 253);" onclick="colorChanged('rgb(227, 242, 253)', 'black')">
+                            <span>50</span>
+                            <span>#E3F2FD</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(187, 222, 251);" onclick="colorChanged('rgb(187, 222, 251)', 'black')">
+                            <span>100</span>
+                            <span>#BBDEFB</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(144, 202, 249);" onclick="colorChanged('rgb(144, 202, 249)', 'black')">
+                            <span>200</span>
+                            <span>#90CAF9</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(100, 181, 246);" onclick="colorChanged('rgb(100, 181, 246)', 'black')">
+                            <span>300</span>
+                            <span>#64B5F6</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(66, 165, 245);" onclick="colorChanged('rgb(66, 165, 245)', 'black')">
+                            <span>400</span>
+                            <span>#42A5F5</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(33, 150, 243);" onclick="colorChanged('rgb(33, 150, 243)', 'black')">
+                            <span>500</span>
+                            <span>#2196F3</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(30, 136, 229); color: white;" onclick="colorChanged('rgb(30, 136, 229)', 'white')">
+                            <span>600</span>
+                            <span>#1E88E5</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(25, 118, 210); color: white;" onclick="colorChanged('rgb(25, 118, 210)', 'white')">
+                            <span>700</span>
+                            <span>#1976D2</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(21, 101, 192); color: white;" onclick="colorChanged('rgb(21, 101, 192)', 'white')">
+                            <span>800</span>
+                            <span>#1565C0</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(13, 71, 161); color: white;" onclick="colorChanged('rgb(13, 71, 161)', 'white')">
+                            <span>900</span>
+                            <span>#0D47A1</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="lightBlue" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Light Blue</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(225, 245, 254);" onclick="colorChanged('rgb(225, 245, 254)', 'black')">
+                            <span>50</span>
+                            <span>#E1F5FE</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(179, 229, 252);" onclick="colorChanged('rgb(179, 229, 252)', 'black')">
+                            <span>100</span>
+                            <span>#B3E5FC</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(129, 212, 250);" onclick="colorChanged('rgb(129, 212, 250)', 'black')">
+                            <span>200</span>
+                            <span>#81D4FA</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(79, 195, 247);" onclick="colorChanged('rgb(79, 195, 247)', 'black')">
+                            <span>300</span>
+                            <span>#4FC3F7</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(41, 182, 246);" onclick="colorChanged('rgb(41, 182, 246)', 'black')">
+                            <span>400</span>
+                            <span>#29B6F6</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(3, 169, 244);" onclick="colorChanged('rgb(3, 169, 244)', 'black')">
+                            <span>500</span>
+                            <span>#03A9F4</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(3, 155, 229);" onclick="colorChanged('rgb(3, 155, 229)', 'black')">
+                            <span>600</span>
+                            <span>#039BE5</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(2, 136, 209); color: white;" onclick="colorChanged('rgb(2, 136, 209)', 'white')">
+                            <span>700</span>
+                            <span>#0288D1</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(2, 119, 189); color: white;" onclick="colorChanged('rgb(2, 119, 189)', 'white')">
+                            <span>800</span>
+                            <span>#0277BD</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(1, 87, 155); color: white;" onclick="colorChanged('rgb(1, 87, 155)', 'white')">
+                            <span>900</span>
+                            <span>#01579B</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="cyan" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Cyan</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(224, 247, 250);" onclick="colorChanged('rgb(224, 247, 250)', 'black')">
+                            <span>50</span>
+                            <span>#E0F7FA</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(178, 235, 242);" onclick="colorChanged('rgb(178, 235, 242)', 'black')">
+                            <span>100</span>
+                            <span>#B2EBF2</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(128, 222, 234);" onclick="colorChanged('rgb(128, 222, 234)', 'black')">
+                            <span>200</span>
+                            <span>#80DEEA</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(77, 208, 225);" onclick="colorChanged('rgb(77, 208, 225)', 'black')">
+                            <span>300</span>
+                            <span>#4DD0E1</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(38, 198, 218);" onclick="colorChanged('rgb(38, 198, 218)', 'black')">
+                            <span>400</span>
+                            <span>#26C6DA</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 188, 212);" onclick="colorChanged('rgb(0, 188, 212)', 'black')">
+                            <span>500</span>
+                            <span>#00BCD4</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 172, 193);" onclick="colorChanged('rgb(0, 172, 193)', 'black')">
+                            <span>600</span>
+                            <span>#00ACC1</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 151, 167); color: white;" onclick="colorChanged('rgb(0, 151, 167)', 'white')">
+                            <span>700</span>
+                            <span>#0097A7</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 131, 143); color: white;" onclick="colorChanged('rgb(0, 131, 143)', 'white')">
+                            <span>800</span>
+                            <span>#00838F</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 96, 100); color: white;" onclick="colorChanged('rgb(0, 96, 100)', 'white')">
+                            <span>900</span>
+                            <span>#006064</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="teal" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Teal</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(224, 242, 241);" onclick="colorChanged('rgb(224, 242, 241)', 'black')">
+                            <span>50</span>
+                            <span>#E0F2F1</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(178, 223, 219);" onclick="colorChanged('rgb(178, 223, 219)', 'black')">
+                            <span>100</span>
+                            <span>#B2DFDB</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(128, 203, 196);" onclick="colorChanged('rgb(128, 203, 196)', 'black')">
+                            <span>200</span>
+                            <span>#80CBC4</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(77, 182, 172);" onclick="colorChanged('rgb(77, 182, 172)', 'black')">
+                            <span>300</span>
+                            <span>#4DB6AC</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(38, 166, 154);" onclick="colorChanged('rgb(38, 166, 154)', 'black')">
+                            <span>400</span>
+                            <span>#26A69A</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 150, 136); color: white;" onclick="colorChanged('rgb(0, 150, 136)', 'white')">
+                            <span>500</span>
+                            <span>#009688</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 137, 123); color: white;" onclick="colorChanged('rgb(0, 137, 123)', 'white')">
+                            <span>600</span>
+                            <span>#00897B</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 121, 107); color: white;" onclick="colorChanged('rgb(0, 121, 107)', 'white')">
+                            <span>700</span>
+                            <span>#00796B</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 105, 92); color: white;" onclick="colorChanged('rgb(0, 105, 92)', 'white')">
+                            <span>800</span>
+                            <span>#00695C</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(0, 77, 64); color: white;" onclick="colorChanged('rgb(0, 77, 64)', 'white')">
+                            <span>900</span>
+                            <span>#004D40</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="green" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Green</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(232, 245, 233);" onclick="colorChanged('rgb(232, 245, 233)', 'black')">
+                            <span>50</span>
+                            <span>#E8F5E9</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(200, 230, 201);" onclick="colorChanged('rgb(200, 230, 201)', 'black')">
+                            <span>100</span>
+                            <span>#C8E6C9</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(165, 214, 167);" onclick="colorChanged('rgb(165, 214, 167)', 'black')">
+                            <span>200</span>
+                            <span>#A5D6A7</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(129, 199, 132);" onclick="colorChanged('rgb(129, 199, 132)', 'black')">
+                            <span>300</span>
+                            <span>#81C784</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(102, 187, 106);" onclick="colorChanged('rgb(102, 187, 106)', 'black')">
+                            <span>400</span>
+                            <span>#66BB6A</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(76, 175, 80);" onclick="colorChanged('rgb(76, 175, 80)', 'black')">
+                            <span>500</span>
+                            <span>#4CAF50</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(67, 160, 71); color: white;" onclick="colorChanged('rgb(67, 160, 71)', 'white')">
+                            <span>600</span>
+                            <span>#43A047</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(56, 142, 60); color: white;" onclick="colorChanged('rgb(56, 142, 60)', 'white')">
+                            <span>700</span>
+                            <span>#388E3C</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(46, 125, 50); color: white;" onclick="colorChanged('rgb(46, 125, 50)', 'white')">
+                            <span>800</span>
+                            <span>#2E7D32</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(27, 94, 32); color: white;" onclick="colorChanged('rgb(27, 94, 32)', 'white')">
+                            <span>900</span>
+                            <span>#1B5E20</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="lightGreen" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Light Green</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(241, 248, 233);" onclick="colorChanged('rgb(241, 248, 233)', 'black')">
+                            <span>50</span>
+                            <span>#F1F8E9</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(220, 237, 200);" onclick="colorChanged('rgb(220, 237, 200)', 'black')">
+                            <span>100</span>
+                            <span>#DCEDC8</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(197, 225, 165);" onclick="colorChanged('rgb(197, 225, 165)', 'black')">
+                            <span>200</span>
+                            <span>#C5E1A5</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(174, 213, 129);" onclick="colorChanged('rgb(174, 213, 129)', 'black')">
+                            <span>300</span>
+                            <span>#AED581</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(156, 204, 101);" onclick="colorChanged('rgb(156, 204, 101)', 'black')">
+                            <span>400</span>
+                            <span>#9CCC65</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(139, 195, 74);" onclick="colorChanged('rgb(139, 195, 74)', 'black')">
+                            <span>500</span>
+                            <span>#8BC34A</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(124, 179, 66);" onclick="colorChanged('rgb(124, 179, 66)', 'black')">
+                            <span>600</span>
+                            <span>#7CB342</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(104, 159, 56);" onclick="colorChanged('rgb(104, 159, 56)', 'black')">
+                            <span>700</span>
+                            <span>#689F38</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(85, 139, 47); color: white;" onclick="colorChanged('rgb(85, 139, 47)', 'white')">
+                            <span>800</span>
+                            <span>#558B2F</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(51, 105, 30); color: white;" onclick="colorChanged('rgb(51, 105, 30)', 'white')">
+                            <span>900</span>
+                            <span>#33691E</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="lime" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Lime</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(249, 251, 231);" onclick="colorChanged('rgb(249, 251, 231)', 'black')">
+                            <span>50</span>
+                            <span>#F9FBE7</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(240, 244, 195);" onclick="colorChanged('rgb(240, 244, 195)', 'black')">
+                            <span>100</span>
+                            <span>#F0F4C3</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(230, 238, 156);" onclick="colorChanged('rgb(230, 238, 156)', 'black')">
+                            <span>200</span>
+                            <span>#E6EE9C</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(220, 231, 117);" onclick="colorChanged('rgb(220, 231, 117)', 'black')">
+                            <span>300</span>
+                            <span>#DCE775</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(212, 225, 87);" onclick="colorChanged('rgb(212, 225, 87)', 'black')">
+                            <span>400</span>
+                            <span>#D4E157</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(205, 220, 57);" onclick="colorChanged('rgb(205, 220, 57)', 'black')">
+                            <span>500</span>
+                            <span>#CDDC39</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(192, 202, 51);" onclick="colorChanged('rgb(192, 202, 51)', 'black')">
+                            <span>600</span>
+                            <span>#C0CA33</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(175, 180, 43);" onclick="colorChanged('rgb(175, 180, 43)', 'black')">
+                            <span>700</span>
+                            <span>#AFB42B</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(158, 157, 36);" onclick="colorChanged('rgb(158, 157, 36)', 'black')">
+                            <span>800</span>
+                            <span>#9E9D24</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(130, 119, 23); color: white;" onclick="colorChanged('rgb(130, 119, 23)', 'white')">
+                            <span>900</span>
+                            <span>#827717</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="yellow" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Yellow</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(255, 253, 231);" onclick="colorChanged('rgb(255, 253, 231)', 'black')">
+                            <span>50</span>
+                            <span>#FFFDE7</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 249, 196);" onclick="colorChanged('rgb(255, 249, 196)', 'black')">
+                            <span>100</span>
+                            <span>#FFF9C4</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 245, 157);" onclick="colorChanged('rgb(255, 245, 157)', 'black')">
+                            <span>200</span>
+                            <span>#FFF59D</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 241, 118);" onclick="colorChanged('rgb(255, 241, 118)', 'black')">
+                            <span>300</span>
+                            <span>#FFF176</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 238, 88);" onclick="colorChanged('rgb(255, 238, 88)', 'black')">
+                            <span>400</span>
+                            <span>#FFEE58</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 235, 59);" onclick="colorChanged('rgb(255, 235, 59)', 'black')">
+                            <span>500</span>
+                            <span>#FFEB3B</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(253, 216, 53);" onclick="colorChanged('rgb(253, 216, 53)', 'black')">
+                            <span>600</span>
+                            <span>#FDD835</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(251, 192, 45);" onclick="colorChanged('rgb(251, 192, 45)', 'black')">
+                            <span>700</span>
+                            <span>#FBC02D</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(249, 168, 37);" onclick="colorChanged('rgb(249, 168, 37)', 'black')">
+                            <span>800</span>
+                            <span>#F9A825</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(245, 127, 23);" onclick="colorChanged('rgb(245, 127, 23)', 'black')">
+                            <span>900</span>
+                            <span>#F57F17</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="amber" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Amber</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(255, 248, 225);" onclick="colorChanged('rgb(255, 248, 225)', 'black')">
+                            <span>50</span>
+                            <span>#FFF8E1</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 236, 179);" onclick="colorChanged('rgb(255, 236, 179)', 'black')">
+                            <span>100</span>
+                            <span>#FFECB3</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 224, 130);" onclick="colorChanged('rgb(255, 224, 130)', 'black')">
+                            <span>200</span>
+                            <span>#FFE082</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 213, 79);" onclick="colorChanged('rgb(255, 213, 79)', 'black')">
+                            <span>300</span>
+                            <span>#FFD54F</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 202, 40);" onclick="colorChanged('rgb(255, 202, 40)', 'black')">
+                            <span>400</span>
+                            <span>#FFCA28</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 193, 7);" onclick="colorChanged('rgb(255, 193, 7)', 'black')">
+                            <span>500</span>
+                            <span>#FFC107</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 179, 0);" onclick="colorChanged('rgb(255, 179, 0)', 'black')">
+                            <span>600</span>
+                            <span>#FFB300</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 160, 0);" onclick="colorChanged('rgb(255, 160, 0)', 'black')">
+                            <span>700</span>
+                            <span>#FFA000</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 143, 0);" onclick="colorChanged('rgb(255, 143, 0)', 'black')">
+                            <span>800</span>
+                            <span>#FF8F00</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 111, 0);" onclick="colorChanged('rgb(255, 111, 0)', 'black')">
+                            <span>900</span>
+                            <span>#FF6F00</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="orange" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Orange</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(255, 243, 224);" onclick="colorChanged('rgb(255, 243, 224)', 'black')">
+                            <span>50</span>
+                            <span>#FFF3E0</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 224, 178);" onclick="colorChanged('rgb(255, 224, 178)', 'black')">
+                            <span>100</span>
+                            <span>#FFE0B2</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 204, 128);" onclick="colorChanged('rgb(255, 204, 128)', 'black')">
+                            <span>200</span>
+                            <span>#FFCC80</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 183, 77);" onclick="colorChanged('rgb(255, 183, 77)', 'black')">
+                            <span>300</span>
+                            <span>#FFB74D</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 167, 38);" onclick="colorChanged('rgb(255, 167, 38)', 'black')">
+                            <span>400</span>
+                            <span>#FFA726</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 152, 0);" onclick="colorChanged('rgb(255, 152, 0)', 'black')">
+                            <span>500</span>
+                            <span>#FF9800</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(251, 140, 0);" onclick="colorChanged('rgb(251, 140, 0)', 'black')">
+                            <span>600</span>
+                            <span>#FB8C00</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(245, 124, 0);" onclick="colorChanged('rgb(245, 124, 0)', 'black')">
+                            <span>700</span>
+                            <span>#F57C00</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(239, 108, 0);" onclick="colorChanged('rgb(239, 108, 0)', 'black')">
+                            <span>800</span>
+                            <span>#EF6C00</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(230, 81, 0); color: white;" onclick="colorChanged('rgb(230, 81, 0)', 'white')">
+                            <span>900</span>
+                            <span>#E65100</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="deepOrange" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Deep Orange</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(251, 233, 231);" onclick="colorChanged('rgb(251, 233, 231)', 'black')">
+                            <span>50</span>
+                            <span>#FBE9E7</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 204, 188);" onclick="colorChanged('rgb(255, 204, 188)', 'black')">
+                            <span>100</span>
+                            <span>#FFCCBC</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 171, 145);" onclick="colorChanged('rgb(255, 171, 145)', 'black')">
+                            <span>200</span>
+                            <span>#FFAB91</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 138, 101);" onclick="colorChanged('rgb(255, 138, 101)', 'black')">
+                            <span>300</span>
+                            <span>#FF8A65</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 112, 67);" onclick="colorChanged('rgb(255, 112, 67)', 'black')">
+                            <span>400</span>
+                            <span>#FF7043</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 87, 34);" onclick="colorChanged('rgb(255, 87, 34)', 'black')">
+                            <span>500</span>
+                            <span>#FF5722</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(244, 81, 30); color: white;" onclick="colorChanged('rgb(244, 81, 30)', 'white')">
+                            <span>600</span>
+                            <span>#F4511E</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(230, 74, 25); color: white;" onclick="colorChanged('rgb(230, 74, 25)', 'white')">
+                            <span>700</span>
+                            <span>#E64A19</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(216, 67, 21); color: white;" onclick="colorChanged('rgb(216, 67, 21)', 'white')">
+                            <span>800</span>
+                            <span>#D84315</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(191, 54, 12); color: white;" onclick="colorChanged('rgb(191, 54, 12)', 'white')">
+                            <span>900</span>
+                            <span>#BF360C</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="brown" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Brown</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(239, 235, 233);" onclick="colorChanged('rgb(239, 235, 233)', 'black')">
+                            <span>50</span>
+                            <span>#EFEBE9</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(215, 204, 200);" onclick="colorChanged('rgb(215, 204, 200)', 'black')">
+                            <span>100</span>
+                            <span>#D7CCC8</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(188, 170, 164);" onclick="colorChanged('rgb(188, 170, 164)', 'black')">
+                            <span>200</span>
+                            <span>#BCAAA4</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(161, 136, 127); color: white;" onclick="colorChanged('rgb(161, 136, 127)', 'white')">
+                            <span>300</span>
+                            <span>#A1887F</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(141, 110, 99); color: white;" onclick="colorChanged('rgb(141, 110, 99)', 'white')">
+                            <span>400</span>
+                            <span>#8D6E63</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(121, 85, 72); color: white;" onclick="colorChanged('rgb(121, 85, 72)', 'white')">
+                            <span>500</span>
+                            <span>#795548</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(109, 76, 65); color: white;" onclick="colorChanged('rgb(109, 76, 65)', 'white')">
+                            <span>600</span>
+                            <span>#6D4C41</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(93, 64, 55); color: white;" onclick="colorChanged('rgb(93, 64, 55)', 'white')">
+                            <span>700</span>
+                            <span>#5D4037</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(78, 52, 46); color: white;" onclick="colorChanged('rgb(78, 52, 46)', 'white')">
+                            <span>800</span>
+                            <span>#4E342E</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(62, 39, 35); color: white;" onclick="colorChanged('rgb(62, 39, 35)', 'white')">
+                            <span>900</span>
+                            <span>#3E2723</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="grey" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Grey</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(250, 250, 250);" onclick="colorChanged('rgb(250, 250, 250)', 'black')">
+                            <span>50</span>
+                            <span>#FAFAFA</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(245, 245, 245);" onclick="colorChanged('rgb(245, 245, 245)', 'black')">
+                            <span>100</span>
+                            <span>#F5F5F5</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(238, 238, 238);" onclick="colorChanged('rgb(238, 238, 238)', 'black')">
+                            <span>200</span>
+                            <span>#EEEEEE</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(224, 224, 224);" onclick="colorChanged('rgb(224, 224, 224)', 'black')">
+                            <span>300</span>
+                            <span>#E0E0E0</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(189, 189, 189);" onclick="colorChanged('rgb(189, 189, 189)', 'black')">
+                            <span>400</span>
+                            <span>#BDBDBD</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(158, 158, 158);" onclick="colorChanged('rgb(158, 158, 158)', 'black')">
+                            <span>500</span>
+                            <span>#9E9E9E</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(117, 117, 117); color: white;" onclick="colorChanged('rgb(117, 117, 117)', 'white')">
+                            <span>600</span>
+                            <span>#757575</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(97, 97, 97); color: white;" onclick="colorChanged('rgb(97, 97, 97)', 'white')">
+                            <span>700</span>
+                            <span>#616161</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(66, 66, 66); color: white;" onclick="colorChanged('rgb(66, 66, 66)', 'white')">
+                            <span>800</span>
+                            <span>#424242</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(33, 33, 33); color: white;" onclick="colorChanged('rgb(33, 33, 33)', 'white')">
+                            <span>900</span>
+                            <span>#212121</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="blueGrey" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Blue Grey</h2>
+                    <ol class="color-palette">
+                        <li class="color-palette__item" style="background-color: rgb(236, 239, 241);" onclick="colorChanged('rgb(236, 239, 241)', 'black')">
+                            <span>50</span>
+                            <span>#ECEFF1</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(207, 216, 220);" onclick="colorChanged('rgb(207, 216, 220)', 'black')">
+                            <span>100</span>
+                            <span>#CFD8DC</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(176, 190, 197);" onclick="colorChanged('rgb(176, 190, 197)', 'black')">
+                            <span>200</span>
+                            <span>#B0BEC5</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(144, 164, 174);" onclick="colorChanged('rgb(144, 164, 174)', 'black')">
+                            <span>300</span>
+                            <span>#90A4AE</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(120, 144, 156); color: white;" onclick="colorChanged('rgb(120, 144, 156)', 'white')">
+                            <span>400</span>
+                            <span>#78909C</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(96, 125, 139); color: white;" onclick="colorChanged('rgb(96, 125, 139)', 'white')">
+                            <span>500</span>
+                            <span>#607D8B</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(84, 110, 122); color: white;" onclick="colorChanged('rgb(84, 110, 122)', 'white')">
+                            <span>600</span>
+                            <span>#546E7A</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(69, 90, 100); color: white;" onclick="colorChanged('rgb(69, 90, 100)', 'white')">
+                            <span>700</span>
+                            <span>#455A64</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(55, 71, 79); color: white;" onclick="colorChanged('rgb(55, 71, 79)', 'white')">
+                            <span>800</span>
+                            <span>#37474F</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(38, 50, 56); color: white;" onclick="colorChanged('rgb(38, 50, 56)', 'white')">
+                            <span>900</span>
+                            <span>#263238</span>
+                        </li>
+                    </ol>
+                </div>
+                <div id="blackWhite" class="color-palette-wrapper">
+                    <h2 class="color-palette-header">Black/White</h2>
+                    <ol class="color-palette black-white">
+                        <li class="color-palette__item" style="background-color: rgb(0, 0, 0); color: white" onclick="colorChanged('rgb(0, 0, 0)', 'white')">
+                            <span>Black</span>
+                            <span>#000000</span>
+                        </li>
+                        <li class="color-palette__item" style="background-color: rgb(255, 255, 255);" onclick="colorChanged('rgb(255, 255, 255)', 'black')">
+                            <span>White</span>
+                            <span>#FFFFFF</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("materialColor3").checked = true;
+        document.getElementById("name").focus();
+    });
+</script>
